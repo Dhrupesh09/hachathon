@@ -1,82 +1,195 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import bodyParser from "body-parser";
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Import routes
+import authRoutes from './routes/auth.js';
+import productRoutes from './routes/products.js';
+import orderRoutes from './routes/orders.js';
+
+// Load environment variables
+dotenv.config({ path: './config.env' });
 
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'", "https://cdn.tailwindcss.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+app.use('/api/', limiter);
+
+// Body parser middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// CORS configuration
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://yourdomain.com'] 
+    : ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:5000'],
+  credentials: true
+}));
+
+// Static files
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/farmDB")
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch(err => console.error(err));
-
-// Schemas
-const FarmerSchema = new mongoose.Schema({
-  farmName: String,
-  ownerName: String,
-  address: String,
-  email: { type: String, unique: true },
-  phone: String,
-  password: String
-});
-
-const ProductSchema = new mongoose.Schema({
-  farmerId: mongoose.Schema.Types.ObjectId,
-  name: String,
-  category: String,
-  price: Number,
-  unit: String,
-  quantity: Number
-});
-
-const OrderSchema = new mongoose.Schema({
-  farmerId: mongoose.Schema.Types.ObjectId,
-  customerName: String,
-  customerPhone: String,
-  items: [String],
-  price: Number,
-  status: { type: String, default: "new" }
-});
-
-const Farmer = mongoose.model("Farmer", FarmerSchema);
-const Product = mongoose.model("Product", ProductSchema);
-const Order = mongoose.model("Order", OrderSchema);
-
-// Routes
-app.post("/signup", async (req, res) => {
+const connectDB = async () => {
   try {
-    const farmer = new Farmer(req.body);
-    await farmer.save();
-    res.json({ message: "Farmer registered successfully" });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/farmDB', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('❌ MongoDB connection error:', error);
+    process.exit(1);
   }
+};
+
+// Connect to database
+connectDB();
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'FarmDirect API is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
-app.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-  const farmer = await Farmer.findOne({ email, password });
-  if (!farmer) return res.status(401).json({ error: "Invalid login" });
-  res.json({ message: "Login successful", farmerId: farmer._id });
+// Serve static HTML files
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../farmdirect.html'));
 });
 
-app.post("/product", async (req, res) => {
-  const product = new Product(req.body);
-  await product.save();
-  res.json({ message: "Product added", product });
+app.get('/farmer/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/farmersignup.html'));
 });
 
-app.get("/orders/:farmerId", async (req, res) => {
-  const orders = await Order.find({ farmerId: req.params.farmerId });
-  res.json(orders);
+app.get('/farmer/signin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/farmersignin.html'));
 });
 
-app.put("/order/:id", async (req, res) => {
-  const order = await Order.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
-  res.json(order);
+app.get('/farmer/products', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/farmerAddNewProduct.html'));
 });
 
-// Start Server
-app.listen(5000, () => console.log("🚀 Server running on http://localhost:5000"));
+app.get('/farmer/orders', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/farmerManageOrder.html'));
+});
+
+app.get('/farmer/messages', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/farmerCostemerMessage.html'));
+});
+
+app.get('/customer/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/customerSignup.html'));
+});
+
+app.get('/customer/signin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/FFP.html'));
+});
+
+app.get('/customer/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/customerDashboard.html'));
+});
+
+app.get('/customer/chat', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front/FCChatView.html'));
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ 
+    success: false, 
+    message: 'Route not found' 
+  });
+});
+
+// Global error handler
+app.use((error, req, res, next) => {
+  console.error('Global error:', error);
+  
+  if (error.name === 'ValidationError') {
+    const messages = Object.values(error.errors).map(err => err.message);
+    return res.status(400).json({
+      success: false,
+      message: 'Validation Error',
+      errors: messages
+    });
+  }
+  
+  if (error.name === 'CastError') {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid ID format'
+    });
+  }
+  
+  if (error.code === 11000) {
+    return res.status(400).json({
+      success: false,
+      message: 'Duplicate field value entered'
+    });
+  }
+  
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error'
+  });
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 FarmDirect Server running on http://localhost:${PORT}`);
+  console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🗄️  Database: ${process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/farmDB'}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  mongoose.connection.close(() => {
+    console.log('MongoDB connection closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  mongoose.connection.close(() => {
+    console.log('MongoDB connection closed');
+    process.exit(0);
+  });
+});
