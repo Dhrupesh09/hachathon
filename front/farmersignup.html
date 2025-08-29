@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join as Farmer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #059669;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 60;
+    }
+
+    .signup-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 500px;
+    }
+
+    .signup-container .emoji {
+      font-size: 40px;
+      text-align: center;
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .signup-container p {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      flex: 1;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .checkbox-group {
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .checkbox-group label {
+      margin-right: 15px;
+    }
+
+    .benefits {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .benefits p {
+      margin: 5px 0;
+      color: #065f46;
+    }
+
+    .terms {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .terms a {
+      color: #059669;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .signup-btn {
+      width: 100%;
+      padding: 12px;
+      background: #059669;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .signup-btn:hover {
+      background: #047857;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #059669;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .back-home {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .back-home a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="emoji">👩‍🌾</div>
+    <h2>Join as Farmer</h2>
+    <p>Start selling directly to customers in your area</p>
+
+    <form>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Farm Name *</label>
+          <input type="text" placeholder="Green Valley Farm" required>
+        </div>
+        <div class="form-group">
+          <label>Owner Name *</label>
+          <input type="text" placeholder="John Smith" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Farm Address *</label>
+        <input type="text" placeholder="123 Farm Road, Rural County, State 12345" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" placeholder="farmer@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" placeholder="(555) 123-4567" required>
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <label>Primary Products *</label><br>
+        <label><input type="checkbox"> Vegetables</label>
+        <label><input type="checkbox"> Fruits</label>
+        <label><input type="checkbox"> Herbs</label>
+        <label><input type="checkbox"> Dairy</label>
+      </div>
+
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" placeholder="••••••••" required>
+      </div>
+       <br>
+      <div class="benefits">
+        <p>✓ Direct customer connection - no middleman</p>
+        <p>✓ Only 5% platform fee (industry lowest)</p>
+        <p>✓ Instant secure payments</p>
+      </div>
+
+      <div class="terms">
+        <label>
+          <input type="checkbox" required>
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+
+      <button type="submit" class="signup-btn">Create Farmer Account</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="#">Sign in</a>
+    </div>
+
+    <div class="back-home">
+      ← <a href="#">Back to Home</a>
+    </div>
+  </div>
+<form id="signupForm">
+   ...
+</form>
+<script>
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = {
+    farmName: e.target[0].value,
+    ownerName: e.target[1].value,
+    address: e.target[2].value,
+    email: e.target[3].value,
+    phone: e.target[4].value,
+    password: e.target[5].value
+  };
+  let res = await fetch("http://localhost:5000/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+  let msg = await res.json();
+  alert(msg.message || msg.error);
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmDirect - Direct Farm to Customer Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .perspective-card {
+            transition: all 0.4s ease;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        .perspective-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .farmer-theme {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        
+        .customer-theme {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .status-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .delivery-track {
+            background: linear-gradient(90deg, #10b981 0%, #10b981 var(--progress, 25%), #e5e7eb var(--progress, 25%), #e5e7eb 100%);
+            height: 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Landing Page -->
+    <div id="home" class="page active">
+        <!-- Top Navigation Bar -->
+        <nav class="fixed top-0 w-full z-50 bg-white bg-opacity-95 backdrop-blur-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#features" onclick="scrollToSection('features')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Features</a>
+                        <a href="#how-it-works" onclick="scrollToSection('how-it-works')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">How It Works</a>
+                        <a href="#testimonials" onclick="scrollToSection('testimonials')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Reviews</a>
+                        <a href="#contact" onclick="scrollToSection('contact')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Contact</a>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showPage('customer-signin')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Sign In</button>
+                        <button onclick="showPage('customer-signup')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-gradient text-white min-h-screen flex items-center relative overflow-hidden pt-16">
+            <div class="absolute inset-0 bg-black opacity-10"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                <div class="text-center mb-16">
+                    <div class="text-6xl mb-6">🚜</div>
+                    <h1 class="text-7xl font-bold mb-6 leading-tight">FarmDirect</h1>
+                    <p class="text-2xl mb-8 max-w-4xl mx-auto leading-relaxed opacity-90">
+                        The direct marketplace connecting local farmers with customers. 
+                        <br>Skip the middleman, support local agriculture, enjoy fresh produce.
+                    </p>
+                    
+                    <div class="inline-flex items-center bg-white bg-opacity-20 rounded-full px-8 py-4 mb-12">
+                        <span class="text-lg font-semibold">🌱 500+ Verified Farmers • 50K+ Happy Customers • 100% Direct Connection</span>
+                    </div>
+                </div>
+                
+                <!-- User Type Selection -->
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-12">Choose Your Experience</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <!-- Customer Path -->
+                        <div class="perspective-card rounded-3xl p-10 border border-white border-opacity-20 bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer" onclick="showPage('customer-signin')">
+                            <div class="text-center">
+                                <div class="text-8xl mb-8">🛒</div>
+                                <h3 class="text-3xl font-bold mb-6">I'm a Customer</h3>
+                                <p class="text-xl mb-8 opacity-90 leading-relaxed">
+                                    Browse fresh produce from local farmers, track orders in real-time, 
+                                    and enjoy direct-from-farm delivery to your door.
+                                </p>
+                                
+                                <div class="space-y-4 mb-8 text-left">
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Browse 500+ verified local farmers</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Real-time order tracking with GPS</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Direct chat with farmers</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Same-day delivery available</span>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full bg-white text-emerald-700 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors shadow-lg">
+                                    Start Shopping →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Farmer Path -->
+                        <div class="perspective-card rounded-3xl p-10 border border-white border-opacity-20 bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer" onclick="showPage('farmer-signin')">
+                            <div class="text-center">
+                                <div class="text-8xl mb-8">👨‍🌾</div>
+                                <h3 class="text-3xl font-bold mb-6">I'm a Farmer</h3>
+                                <p class="text-xl mb-8 opacity-90 leading-relaxed">
+                                    Sell directly to customers, manage your products, track sales, 
+                                    and build lasting relationships with your community.
+                                </p>
+                                
+                                <div class="space-y-4 mb-8 text-left">
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Sell directly - no middleman fees</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Instant payments & secure transactions</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Professional dashboard & analytics</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-300 mr-3 text-xl">✓</span>
+                                        <span class="text-lg">Only 5% platform fee (industry lowest)</span>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full bg-white text-emerald-700 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors shadow-lg">
+                                    Start Selling →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Platform Stats -->
+                <div class="grid md:grid-cols-4 gap-8 text-center mt-20">
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                        <div class="text-4xl font-bold mb-2">500+</div>
+                        <div class="text-lg opacity-90">Verified Farmers</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                        <div class="text-4xl font-bold mb-2">50K+</div>
+                        <div class="text-lg opacity-90">Happy Customers</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                        <div class="text-4xl font-bold mb-2">100%</div>
+                        <div class="text-lg opacity-90">Direct Connection</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                        <div class="text-4xl font-bold mb-2">24/7</div>
+                        <div class="text-lg opacity-90">Order Tracking</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section id="features" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Complete Farm-to-Table Solution</h2>
+                    <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                        FarmDirect provides everything you need for direct farm-to-customer commerce, 
+                        from product listings to real-time delivery tracking.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Real-Time GPS Tracking -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">📍</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Real-Time GPS Tracking</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Track your orders from harvest to doorstep with live GPS updates. 
+                            See exactly where your delivery is and get accurate arrival times.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Live driver location</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Estimated arrival time</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Delivery notifications</li>
+                        </ul>
+                    </div>
+
+                    <!-- Direct Farmer Communication -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">💬</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Direct Farmer Chat</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Connect directly with farmers through our built-in messaging system. 
+                            Ask questions, learn about growing methods, and build relationships.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Instant messaging</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Photo sharing</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Growing tips & recipes</li>
+                        </ul>
+                    </div>
+
+                    <!-- Smart Inventory Management -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">📊</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Smart Inventory System</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Farmers can manage stock levels, set availability windows, and 
+                            automatically update customers about fresh harvests.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Real-time stock updates</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Harvest scheduling</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Low stock alerts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Secure Payment Processing -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">💳</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Secure Payment System</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Bank-grade security with instant payments to farmers. 
+                            Multiple payment options for customer convenience.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Instant farmer payouts</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Multiple payment methods</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Fraud protection</li>
+                        </ul>
+                    </div>
+
+                    <!-- Quality Verification -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">🏆</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Quality Verification</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            All farmers are verified with certifications displayed. 
+                            Customer reviews and ratings ensure consistent quality.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Farmer verification</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Organic certifications</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Customer ratings</li>
+                        </ul>
+                    </div>
+
+                    <!-- Analytics Dashboard -->
+                    <div class="feature-card rounded-2xl p-8 text-center border border-gray-100">
+                        <div class="text-5xl mb-6">📈</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Analytics Dashboard</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Comprehensive analytics for farmers to track sales, popular products, 
+                            and customer preferences to optimize their business.
+                        </p>
+                        <ul class="text-sm text-gray-600 text-left space-y-2">
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Sales analytics</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Customer insights</li>
+                            <li class="flex items-center"><span class="text-emerald-500 mr-2">✓</span>Revenue tracking</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Additional Features Row -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="text-3xl mb-3">🚚</div>
+                        <h4 class="font-bold text-gray-900 mb-2">Same-Day Delivery</h4>
+                        <p class="text-sm text-gray-600">Fresh produce delivered within hours of harvest</p>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="text-3xl mb-3">🌡️</div>
+                        <h4 class="font-bold text-gray-900 mb-2">Temperature Control</h4>
+                        <p class="text-sm text-gray-600">Cold chain management for optimal freshness</p>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="text-3xl mb-3">📱</div>
+                        <h4 class="font-bold text-gray-900 mb-2">Mobile Optimized</h4>
+                        <p class="text-sm text-gray-600">Full functionality on all devices</p>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-gray-50 rounded-xl">
+                        <div class="text-3xl mb-3">🔔</div>
+                        <h4 class="font-bold text-gray-900 mb-2">Smart Notifications</h4>
+                        <p class="text-sm text-gray-600">Updates on orders, harvests, and deliveries</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">How FarmDirect Works</h2>
+                    <p class="text-xl text-gray-600">Simple steps to fresh, local produce</p>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-3xl">🔍</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">1. Browse Local Farms</h3>
+                        <p class="text-gray-600">Discover verified farmers in your area and see what's fresh and available today.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-3xl">🛒</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">2. Order Fresh Produce</h3>
+                        <p class="text-gray-600">Select your favorite items and place your order directly with local farmers.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-3xl">🚚</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">3. Track Your Delivery</h3>
+                        <p class="text-gray-600">Follow your order in real-time from harvest to your doorstep with GPS tracking.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <span class="text-3xl">🏠</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">4. Enjoy Fresh Food</h3>
+                        <p class="text-gray-600">Receive farm-fresh produce at your door and enjoy the taste of local agriculture.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Community Says</h2>
+                    <p class="text-xl text-gray-600">Real stories from farmers and customers</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="feature-card rounded-2xl p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-2xl">👩‍💼</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Sarah Johnson</h4>
+                                <p class="text-gray-600">Customer, Downtown</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            "FarmDirect has completely changed how I shop for groceries. The produce is incredibly fresh, 
+                            and I love knowing exactly where my food comes from. The farmers are so passionate about their work!"
+                        </p>
+                        <div class="text-yellow-400">⭐⭐⭐⭐⭐</div>
+                    </div>
+
+                    <div class="feature-card rounded-2xl p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-2xl">👨‍🌾</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Mike Thompson</h4>
+                                <p class="text-gray-600">Green Valley Farm</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            "As a third-generation farmer, FarmDirect has given us a direct connection to our community. 
+                            We can share our story, get fair prices, and build lasting relationships with customers."
+                        </p>
+                        <div class="text-yellow-400">⭐⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-gray-900 text-white py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="text-2xl font-bold mb-4">🚜 FarmDirect</div>
+                        <p class="text-gray-400 leading-relaxed">
+                            Connecting local farmers directly with customers for fresher food and stronger communities.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">For Customers</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Browse Farmers</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">How It Works</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Delivery Areas</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Customer Support</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">For Farmers</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Start Selling</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Farmer Resources</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Farmer Support</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Company</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                    <p>&copy; 2024 FarmDirect. All rights reserved. Supporting local agriculture, one delivery at a time.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Customer Sign In Page -->
+    <div id="customer-signin" class="page">
+        <div class="min-h-screen customer-theme flex items-center justify-center px-4">
+            <div class="max-w-sm w-full">
+                <div class="bg-white rounded-2xl shadow-2xl p-6">
+                    <div class="text-center mb-8">
+                        <div class="text-5xl mb-4">🛒</div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Customer Portal</h1>
+                        <p class="text-gray-600">Sign in to start shopping fresh local produce</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="your@email.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span class="text-sm text-gray-600">Remember me</span>
+                            </label>
+                            <a href="#" class="text-sm text-blue-600 hover:text-blue-700">Forgot password?</a>
+                        </div>
+                        
+                        <button onclick="showPage('customer-dashboard')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                            Sign In
+                        </button>
+                        
+                        <div class="text-center">
+                            <span class="text-gray-600">Don't have an account? </span>
+                            <button onclick="showPage('customer-signup')" class="text-blue-600 hover:text-blue-700 font-semibold">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="showPage('home')" class="text-white hover:text-blue-200 font-medium">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Sign Up Page -->
+    <div id="customer-signup" class="page">
+        <div class="min-h-screen customer-theme flex items-center justify-center px-4">
+            <div class="max-w-sm w-full">
+                <div class="bg-white rounded-2xl shadow-2xl p-6">
+                    <div class="text-center mb-8">
+                        <div class="text-5xl mb-4">🛒</div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Join as Customer</h1>
+                        <p class="text-gray-600">Create your account to start shopping</p>
+                    </div>
+
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Doe">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="john@email.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="(555) 123-4567">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+                            <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="123 Main St, City, State 12345">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                        </div>
+                        
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" required class="mr-3 mt-1">
+                                <span class="text-sm text-gray-700">I agree to the <a href="#" class="text-blue-600 hover:text-blue-700 underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:text-blue-700 underline">Privacy Policy</a></span>
+                            </label>
+                        </div>
+                        
+                        <button type="button" onclick="showPage('customer-dashboard')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                            Create Account
+                        </button>
+                        
+                        <div class="text-center">
+                            <span class="text-gray-600">Already have an account? </span>
+                            <button type="button" onclick="showPage('customer-signin')" class="text-blue-600 hover:text-blue-700 font-semibold">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="showPage('home')" class="text-white hover:text-blue-200 font-medium">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farmer Sign In Page -->
+    <div id="farmer-signin" class="page">
+        <div class="min-h-screen farmer-theme flex items-center justify-center px-4">
+            <div class="max-w-sm w-full">
+                <div class="bg-white rounded-2xl shadow-2xl p-6">
+                    <div class="text-center mb-8">
+                        <div class="text-5xl mb-4">👨‍🌾</div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Farmer Portal</h1>
+                        <p class="text-gray-600">Sign in to manage your farm and products</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span class="text-sm text-gray-600">Remember me</span>
+                            </label>
+                            <a href="#" class="text-sm text-emerald-600 hover:text-emerald-700">Forgot password?</a>
+                        </div>
+                        
+                        <button onclick="showPage('farmer-dashboard')" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
+                            Sign In
+                        </button>
+                        
+                        <div class="text-center">
+                            <span class="text-gray-600">Don't have an account? </span>
+                            <button onclick="showPage('farmer-signup')" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="showPage('home')" class="text-white hover:text-emerald-200 font-medium">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farmer Sign Up Page -->
+    <div id="farmer-signup" class="page">
+        <div class="min-h-screen farmer-theme flex items-center justify-center px-4 py-8">
+            <div class="max-w-2xl w-full">
+                <div class="bg-white rounded-2xl shadow-2xl p-8">
+                    <div class="text-center mb-8">
+                        <div class="text-5xl mb-4">👨‍🌾</div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Join as Farmer</h1>
+                        <p class="text-gray-600">Start selling directly to customers in your area</p>
+                    </div>
+
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Farm Name *</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Green Valley Farm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Owner Name *</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="John Smith">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Farm Address *</label>
+                            <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="123 Farm Road, Rural County, State 12345">
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="(555) 123-4567">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Primary Products *</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <span class="text-sm text-gray-700">Vegetables</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <span class="text-sm text-gray-700">Fruits</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <span class="text-sm text-gray-700">Herbs</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <span class="text-sm text-gray-700">Dairy</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                            <input type="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
+                        </div>
+                        
+                        <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
+                            <h3 class="font-semibold text-emerald-900 mb-2">Platform Benefits</h3>
+                            <ul class="text-sm text-emerald-800 space-y-1">
+                                <li class="flex items-center"><span class="text-emerald-600 mr-2">✓</span>Direct customer connection - no middleman</li>
+                                <li class="flex items-center"><span class="text-emerald-600 mr-2">✓</span>Only 5% platform fee (industry lowest)</li>
+                                <li class="flex items-center"><span class="text-emerald-600 mr-2">✓</span>Instant secure payments</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <label class="flex items-start">
+                                <input type="checkbox" required class="mr-3 mt-1">
+                                <span class="text-sm text-gray-700">I agree to the <a href="#" class="text-emerald-600 hover:text-emerald-700 underline">Terms of Service</a> and <a href="#" class="text-emerald-600 hover:text-emerald-700 underline">Privacy Policy</a></span>
+                            </label>
+                        </div>
+                        
+                        <button type="button" onclick="showPage('farmer-dashboard')" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
+                            Create Farmer Account
+                        </button>
+                        
+                        <div class="text-center">
+                            <span class="text-gray-600">Already have an account? </span>
+                            <button type="button" onclick="showPage('farmer-signin')" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="showPage('home')" class="text-white hover:text-emerald-200 font-medium">← Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Dashboard -->
+    <div id="customer-dashboard" class="page">
+        <!-- Customer Navigation -->
+        <nav class="floating-nav fixed top-0 w-full z-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                        <span class="ml-3 text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold">CUSTOMER</span>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#" onclick="showPage('marketplace')" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Marketplace</a>
+                        <a href="#" onclick="showPage('order-tracking')" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">My Orders</a>
+                        <a href="#" onclick="showPage('customer-profile')" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Profile</a>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <button onclick="toggleCart()" class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                                <span class="text-xl">🛒</span>
+                                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                        <button onclick="showPage('home')" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome back, Sarah! 👋</h1>
+                <p class="text-gray-600">Discover fresh produce from local farmers in your area</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Orders</p>
+                            <p class="text-2xl font-bold text-gray-900">47</p>
+                        </div>
+                        <div class="text-3xl">📦</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Active Orders</p>
+                            <p class="text-2xl font-bold text-gray-900">2</p>
+                        </div>
+                        <div class="text-3xl">🚚</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Favorite Farmers</p>
+                            <p class="text-2xl font-bold text-gray-900">8</p>
+                        </div>
+                        <div class="text-3xl">❤️</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Money Saved</p>
+                            <p class="text-2xl font-bold text-gray-900">$340</p>
+                        </div>
+                        <div class="text-3xl">💰</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <button onclick="showPage('marketplace')" class="bg-blue-600 text-white p-6 rounded-xl hover:bg-blue-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">🛒</div>
+                    <h3 class="text-xl font-bold mb-2">Browse Marketplace</h3>
+                    <p class="text-blue-100">Discover fresh produce from local farmers</p>
+                </button>
+                
+                <button onclick="showPage('order-tracking')" class="bg-emerald-600 text-white p-6 rounded-xl hover:bg-emerald-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">📍</div>
+                    <h3 class="text-xl font-bold mb-2">Track Orders</h3>
+                    <p class="text-emerald-100">See real-time delivery status</p>
+                </button>
+                
+                <button class="bg-purple-600 text-white p-6 rounded-xl hover:bg-purple-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">⭐</div>
+                    <h3 class="text-xl font-bold mb-2">Leave Reviews</h3>
+                    <p class="text-purple-100">Rate your recent purchases</p>
+                </button>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Orders</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <span class="text-xl">🥬</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Order #DTD-2024-001</h4>
+                                <p class="text-sm text-gray-600">Green Valley Farm • Mixed Greens, Carrots</p>
+                                <p class="text-xs text-gray-500">2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-emerald-600">$37.24</span>
+                            <div class="mt-1">
+                                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">In Transit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farmer Dashboard -->
+    <div id="farmer-dashboard" class="page">
+        <!-- Farmer Navigation -->
+        <nav class="floating-nav fixed top-0 w-full z-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                        <span class="ml-3 text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold">FARMER</span>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#" onclick="showPage('product-listing')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Add Products</a>
+                        <a href="#" onclick="showPage('farmer-orders')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Orders</a>
+                        <a href="#" onclick="showPage('farmer-analytics')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Analytics</a>
+                        <a href="#" onclick="showPage('farmer-profile')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Profile</a>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showPage('home')" class="text-gray-700 hover:text-emerald-600 font-medium transition-colors">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Green Valley Farm Dashboard 🌱</h1>
+                <p class="text-gray-600">Manage your products, orders, and customer relationships</p>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Sales</p>
+                            <p class="text-2xl font-bold text-gray-900">$12,450</p>
+                            <p class="text-sm text-emerald-600">+15% this month</p>
+                        </div>
+                        <div class="text-3xl">💰</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Active Orders</p>
+                            <p class="text-2xl font-bold text-gray-900">23</p>
+                            <p class="text-sm text-blue-600">8 pending pickup</p>
+                        </div>
+                        <div class="text-3xl">📦</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Products Listed</p>
+                            <p class="text-2xl font-bold text-gray-900">47</p>
+                            <p class="text-sm text-yellow-600">12 low stock</p>
+                        </div>
+                        <div class="text-3xl">🥬</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Customer Rating</p>
+                            <p class="text-2xl font-bold text-gray-900">4.9</p>
+                            <p class="text-sm text-emerald-600">156 reviews</p>
+                        </div>
+                        <div class="text-3xl">⭐</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <button onclick="showPage('product-listing')" class="bg-emerald-600 text-white p-6 rounded-xl hover:bg-emerald-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">➕</div>
+                    <h3 class="text-xl font-bold mb-2">Add New Product</h3>
+                    <p class="text-emerald-100">List new items for sale</p>
+                </button>
+                
+                <button onclick="showPage('farmer-orders')" class="bg-blue-600 text-white p-6 rounded-xl hover:bg-blue-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">📋</div>
+                    <h3 class="text-xl font-bold mb-2">Manage Orders</h3>
+                    <p class="text-blue-100">View and update order status</p>
+                </button>
+                
+                <button class="bg-purple-600 text-white p-6 rounded-xl hover:bg-purple-700 transition-colors text-left">
+                    <div class="text-3xl mb-3">💬</div>
+                    <h3 class="text-xl font-bold mb-2">Customer Messages</h3>
+                    <p class="text-purple-100">Respond to customer inquiries</p>
+                </button>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Orders</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <span class="text-xl">🥬</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Order #DTD-2024-001</h4>
+                                <p class="text-sm text-gray-600">Sarah Johnson • Mixed Greens, Carrots, Tomatoes</p>
+                                <p class="text-xs text-gray-500">Ordered 2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-emerald-600">$37.24</span>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">Preparing</span>
+                                <button class="bg-emerald-600 text-white px-4 py-1 rounded text-xs hover:bg-emerald-700">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Page -->
+    <div id="marketplace" class="page">
+        <nav class="floating-nav fixed top-0 w-full z-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center cursor-pointer" onclick="showPage('customer-dashboard')">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                        <span class="ml-3 text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold">MARKETPLACE</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <button onclick="toggleCart()" class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                                <span class="text-xl">🛒</span>
+                                <span id="cart-count-2" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                        <button onclick="showPage('customer-dashboard')" class="text-blue-600 hover:text-blue-700 font-medium">← Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Local Marketplace</h1>
+                <p class="text-gray-600">Fresh produce directly from verified local farmers</p>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 feature-card">
+                    <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                        <span class="text-6xl">🥬</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Organic Mixed Greens</h3>
+                            <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-semibold">ORGANIC</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Green Valley Farm • 2.3 miles away</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-lg font-bold text-emerald-600">$6.99/lb</span>
+                            <span class="text-sm text-gray-500">⭐ 4.9 (45)</span>
+                        </div>
+                        <button onclick="addToCart('mixed-greens')" class="w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 feature-card">
+                    <div class="h-48 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+                        <span class="text-6xl">🍅</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Heirloom Tomatoes</h3>
+                            <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-semibold">HEIRLOOM</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Heritage Harvest • 1.8 miles away</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-lg font-bold text-emerald-600">$8.50/lb</span>
+                            <span class="text-sm text-gray-500">⭐ 5.0 (32)</span>
+                        </div>
+                        <button onclick="addToCart('heirloom-tomatoes')" class="w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 feature-card">
+                    <div class="h-48 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                        <span class="text-6xl">🥕</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Rainbow Carrots</h3>
+                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold">FRESH</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Green Valley Farm • 2.3 miles away</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-lg font-bold text-emerald-600">$4.25/lb</span>
+                            <span class="text-sm text-gray-500">⭐ 4.8 (67)</span>
+                        </div>
+                        <button onclick="addToCart('rainbow-carrots')" class="w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 feature-card">
+                    <div class="h-48 bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
+                        <span class="text-6xl">🍎</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Honeycrisp Apples</h3>
+                            <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">PREMIUM</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">Sunrise Orchards • 4.1 miles away</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-lg font-bold text-emerald-600">$5.99/lb</span>
+                            <span class="text-sm text-gray-500">⭐ 4.9 (89)</span>
+                        </div>
+                        <button onclick="addToCart('honeycrisp-apples')" class="w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Tracking Page -->
+    <div id="order-tracking" class="page">
+        <nav class="floating-nav fixed top-0 w-full z-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center cursor-pointer" onclick="showPage('customer-dashboard')">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                        <span class="ml-3 text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold">ORDER TRACKING</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showPage('customer-dashboard')" class="text-blue-600 hover:text-blue-700 font-medium">← Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Track Your Orders</h1>
+                <p class="text-gray-600">Real-time tracking from farm to your doorstep</p>
+            </div>
+
+            <!-- Active Orders -->
+            <div class="space-y-6">
+                <!-- Order 1 - In Transit -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Order #DTD-2024-001</h3>
+                            <p class="text-gray-600">From Green Valley Farm • Ordered 2 hours ago</p>
+                        </div>
+                        <span class="status-badge bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
+                            🚚 In Transit
+                        </span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-bold">✓</div>
+                                <span class="text-sm font-medium text-gray-900">Order Confirmed</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-bold">✓</div>
+                                <span class="text-sm font-medium text-gray-900">Harvested</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-bold">🚚</div>
+                                <span class="text-sm font-medium text-emerald-600">In Transit</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-sm">4</div>
+                                <span class="text-sm text-gray-500">Delivered</span>
+                            </div>
+                        </div>
+                        <div class="delivery-track" style="--progress: 75%"></div>
+                    </div>
+                    
+                    <!-- Live Tracking -->
+                    <div class="bg-emerald-50 rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-emerald-900">📍 Live Location</h4>
+                            <span class="text-sm text-emerald-700">Last updated: 2 minutes ago</span>
+                        </div>
+                        <p class="text-emerald-800 mb-3">Your order is currently on Main Street, approximately 8 minutes away from your location.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-emerald-700">Driver: Mike Johnson</span>
+                            <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm">
+                                📞 Contact Driver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Listing Page (Farmer) -->
+    <div id="product-listing" class="page">
+        <nav class="floating-nav fixed top-0 w-full z-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center cursor-pointer" onclick="showPage('farmer-dashboard')">
+                        <div class="text-2xl font-bold gradient-text">🚜 FarmDirect</div>
+                        <span class="ml-3 text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold">ADD PRODUCT</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button onclick="showPage('farmer-dashboard')" class="text-emerald-600 hover:text-emerald-700 font-medium">← Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Add New Product</h1>
+                <p class="text-gray-600">List your fresh produce for direct sale to customers</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <form class="space-y-6">
+                    <!-- Basic Information -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                            <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="e.g., Organic Mixed Greens">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                            <select required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                <option value="">Select category</option>
+                                <option>Vegetables</option>
+                                <option>Fruits</option>
+                                <option>Herbs</option>
+                                <option>Dairy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price per Unit *</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-gray-500">$</span>
+                                <input type="number" step="0.01" required class="w-full border border-gray-300 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Unit Type *</label>
+                            <select required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                <option value="">Select unit</option>
+                                <option>per lb</option>
+                                <option>per piece</option>
+                                <option>per bunch</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Available Quantity *</label>
+                            <input type="number" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button type="button" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                            Save as Draft
+                        </button>
+                        <button type="button" onclick="showPage('farmer-dashboard')" class="flex-1 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                            Publish Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 border-l border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-900">Shopping Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <span class="text-2xl">×</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-6">
+            <div class="space-y-4">
+                <!-- Cart Item 1 -->
+                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
+                        <span class="text-2xl">🥬</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-gray-900">Mixed Greens</h4>
+                        <p class="text-sm text-gray-600">Green Valley Farm</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex items-center space-x-2">
+                                <button class="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-100">-</button>
+                                <span class="font-medium">2</span>
+                                <button class="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-100">+</button>
+                            </div>
+                            <span class="font-bold text-emerald-600">$13.98</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-200 p-6">
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-lg font-bold">Total</span>
+                    <span class="text-xl font-bold text-emerald-600">$35.23</span>
+                </div>
+                <button class="w-full bg-emerald-600 text-white py-4 rounded-lg hover:bg-emerald-700 transition-colors font-semibold text-lg">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for cart -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleCart()"></div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.classList.add('fade-in');
+                
+                // Remove fade-in class after animation
+                setTimeout(() => {
+                    targetPage.classList.remove('fade-in');
+                }, 400);
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const cartOverlay = document.getElementById('cart-overlay');
+            
+            if (cartSidebar.classList.contains('translate-x-full')) {
+                cartSidebar.classList.remove('translate-x-full');
+                cartOverlay.classList.remove('hidden');
+            } else {
+                cartSidebar.classList.add('translate-x-full');
+                cartOverlay.classList.add('hidden');
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function addToCart(productId) {
+            // Update cart counts
+            const cartCount1 = document.getElementById('cart-count');
+            const cartCount2 = document.getElementById('cart-count-2');
+            
+            if (cartCount1) {
+                let currentCount = parseInt(cartCount1.textContent);
+                cartCount1.textContent = currentCount + 1;
+            }
+            
+            if (cartCount2) {
+                let currentCount = parseInt(cartCount2.textContent);
+                cartCount2.textContent = currentCount + 1;
+            }
+            
+            // Show success message
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            notification.textContent = 'Added to cart!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('home');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9740600ad58f343c',t:'MTc1NjAxMjU2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

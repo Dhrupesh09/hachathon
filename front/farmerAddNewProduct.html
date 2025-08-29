@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Product</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f8fa;
+      margin: 0;
+      padding: 40px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: #111;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: #666;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #444;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus {
+      border-color: #16a34a;
+      outline: none;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .buttons {
+      grid-column: span 2;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-draft {
+      background: #e5e7eb;
+      color: #333;
+    }
+
+    .btn-draft:hover {
+      background: #d1d5db;
+    }
+
+    .btn-publish {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn-publish:hover {
+      background: #15803d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Add New Product</h2>
+    <p>List your fresh produce for direct sale to customers</p>
+
+    <form>
+      <div>
+        <label>Product Name *</label>
+        <input type="text" placeholder="e.g., Organic Mixed Greens" required>
+      </div>
+
+      <div>
+        <label>Category *</label>
+        <select required>
+          <option value="">Select category</option>
+          <option>Vegetables</option>
+          <option>Fruits</option>
+          <option>Dairy</option>
+          <option>Grains</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Price per Unit *</label>
+        <input type="number" placeholder="$ 0.00" step="0.01" required>
+      </div>
+
+      <div>
+        <label>Unit Type *</label>
+        <select required>
+          <option value="">Select unit</option>
+          <option>kg</option>
+          <option>gram</option>
+          <option>piece</option>
+          <option>dozen</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Available Quantity *</label>
+        <input type="number" placeholder="0" min="0" required>
+      </div>
+
+      <div class="buttons full-width">
+        <button type="button" class="btn btn-draft">Save as Draft</button>
+        <button type="submit" class="btn btn-publish">Publish Product</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

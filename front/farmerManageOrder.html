@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    p {
+      color: #6b7280;
+    }
+
+    /* Status Cards */
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .stat-box {
+      flex: 1;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: 1px solid transparent;
+    }
+
+    .new-orders {
+      background: #fefce8;
+      color: #ca8a04;
+      border-color: #fde68a;
+    }
+
+    .preparing {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #bfdbfe;
+    }
+
+    .ready {
+      background: #ecfdf5;
+      color: #059669;
+      border-color: #a7f3d0;
+    }
+
+    /* Order Card */
+    .order-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .order-price {
+      font-weight: bold;
+      color: #059669;
+      font-size: 18px;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .badge.new {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .badge.preparing {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge.ready {
+      background: #d1fae5;
+      color: #047857;
+    }
+
+    .customer-info {
+      margin: 8px 0;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .items {
+      margin: 10px 0;
+      font-size: 14px;
+      color: #374151;
+      background: #f9fafb;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      width: calc(100% - 70px);
+      padding: 12px;
+      margin-top: 10px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-green {
+      background: #059669;
+    }
+
+    .call-btn {
+      display: inline-block;
+      padding: 12px;
+      margin-left: 10px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #dc267f;
+      font-weight: bold;
+    }
+
+    /* Progress Bar */
+    .progress {
+      background: #e5e7eb;
+      border-radius: 6px;
+      height: 8px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: #2563eb;
+      height: 100%;
+      width: 70%;
+    }
+
+    /* Ready Message */
+    .ready-message {
+      background: #ecfdf5;
+      padding: 12px;
+      border-radius: 8px;
+      color: #047857;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Order Management</h1>
+  <p>Manage your customer orders and track fulfillment</p>
+
+  <div class="stats">
+    <div class="stat-box new-orders"><span id="newCount">8</span><br>New Orders</div>
+    <div class="stat-box preparing"><span id="preparingCount">5</span><br>Preparing</div>
+    <div class="stat-box ready"><span id="readyCount">3</span><br>Ready</div>
+  </div>
+
+  <!-- Order 1 -->
+  <div class="order-card" data-status="new">
+    <div class="order-header">
+      <div>
+        <div class="order-title">Order #001</div>
+        <div class="customer-info">Sarah Johnson<br>📞 (555) 123-4567</div>
+      </div>
+      <div>
+        <div class="order-price">$37.24</div>
+        <div class="badge new">New Order</div>
+      </div>
+    </div>
+    <div class="items">🥬 Mixed Greens, 🥕 Carrots, 🍅 Tomatoes</div>
+    <button class="btn" onclick="startPreparing(this)">Start Preparing</button>
+    <span class="call-btn">📞 Call</span>
+  </div>
+
+  <!-- Order 2 -->
+  <div class="order-card" data-status="preparing">
+    <div class="order-header">
+      <div>
+        <div class="order-title">Order #002</div>
+        <div class="customer-info">Mike Chen<br>📞 (555) 987-6543</div>
+      </div>
+      <div>
+        <div class="order-price">$52.80</div>
+        <div class="badge preparing">Preparing</div>
+      </div>
+    </div>
+    <div class="ready-message">Almost ready! • Est: 2:30 PM</div>
+    <div class="progress"><div class="progress-bar"></div></div>
+    <div class="items">🥒 Cucumbers, 🌶 Peppers, 🧄 Garlic</div>
+    <button class="btn btn-green" onclick="markReady(this)">Mark Ready</button>
+    <span class="call-btn">📞 Call</span>
+  </div>
+
+  <!-- Order 3 -->
+  <div class="order-card" data-status="ready">
+    <div class="order-header">
+      <div>
+        <div class="order-title">Order #003</div>
+        <div class="customer-info">Emma Rodriguez<br>📞 (555) 456-7890</div>
+      </div>
+      <div>
+        <div class="order-price">$28.95</div>
+        <div class="badge ready">Ready for Pickup</div>
+      </div>
+    </div>
+    <div class="ready-message">✅ Order is ready! • Pickup: 3:00–6:00 PM</div>
+    <div class="items">🥬 Lettuce, 🍅 Cherry Tomatoes</div>
+    <button class="btn btn-green" onclick="markDelivered(this)">Mark Delivered</button>
+    <span class="call-btn">📞 Call</span>
+  </div>
+
+  <script>
+    // update counters dynamically
+    function updateCounters() {
+      let newCount = document.querySelectorAll(".order-card[data-status='new']").length;
+      let preparingCount = document.querySelectorAll(".order-card[data-status='preparing']").length;
+      let readyCount = document.querySelectorAll(".order-card[data-status='ready']").length;
+
+      document.getElementById("newCount").innerText = newCount;
+      document.getElementById("preparingCount").innerText = preparingCount;
+      document.getElementById("readyCount").innerText = readyCount;
+    }
+
+    function startPreparing(btn) {
+      let card = btn.closest(".order-card");
+      card.setAttribute("data-status", "preparing");
+
+      // Update badge
+      let badge = card.querySelector(".badge");
+      badge.className = "badge preparing";
+      badge.innerText = "Preparing";
+
+      // Update button
+      btn.innerText = "Mark Ready";
+      btn.className = "btn btn-green";
+      btn.setAttribute("onclick", "markReady(this)");
+
+      // Add progress bar
+      let progress = document.createElement("div");
+      progress.className = "progress";
+      progress.innerHTML = '<div class="progress-bar"></div>';
+      card.insertBefore(progress, card.querySelector(".items"));
+
+      updateCounters();
+    }
+
+    function markReady(btn) {
+      let card = btn.closest(".order-card");
+      card.setAttribute("data-status", "ready");
+
+      // Update badge
+      let badge = card.querySelector(".badge");
+      badge.className = "badge ready";
+      badge.innerText = "Ready for Pickup";
+
+      // Update button
+      btn.innerText = "Mark Delivered";
+      btn.className = "btn btn-green";
+      btn.setAttribute("onclick", "markDelivered(this)");
+
+      // Remove progress
+      let progress = card.querySelector(".progress");
+      if (progress) progress.remove();
+
+      // Add ready message
+      let msg = document.createElement("div");
+      msg.className = "ready-message";
+      msg.innerText = "✅ Order is ready! • Pickup: 3:00–6:00 PM";
+      card.insertBefore(msg, card.querySelector(".items"));
+
+      updateCounters();
+    }
+
+    function markDelivered(btn) {
+      let card = btn.closest(".order-card");
+      card.remove(); // remove order from list
+
+      updateCounters();
+    }
+
+    // Initial counter update
+    updateCounters();
+  </script>
+
+</body>
+</html>

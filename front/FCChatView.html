@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Messages</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: 24px;
+    }
+
+    p.subtitle {
+      margin: 0 20px 20px;
+      color: #6b7280;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 80px);
+      margin: 0 20px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+
+    .conversation {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f1f1;
+      transition: background 0.2s;
+    }
+
+    .conversation:hover {
+      background: #f9fafb;
+    }
+
+    .conversation.active {
+      background: #e6fef1;
+    }
+
+    .conversation img, .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 12px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .conversation-details {
+      flex: 1;
+    }
+
+    .conversation-details strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .conversation-details small {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      margin-left: auto;
+    }
+
+    /* Chat Section */
+    .chat {
+      flex: 1;
+      margin-left: 20px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .chat-header {
+      padding: 15px;
+      border-bottom: 1px solid #f1f1f1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .chat-header small {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      max-width: 60%;
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+
+    .message.you {
+      background: #d1fae5;
+      align-self: flex-start;
+    }
+
+    .message.customer {
+      background: #f3f4f6;
+      align-self: flex-end;
+    }
+
+    .chat-footer {
+      padding: 15px;
+      border-top: 1px solid #f1f1f1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quick-replies {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .quick-replies button {
+      background: #d1fae5;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+
+    .chat-footer button.send {
+      background: #10b981;
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Customer Messages</h1>
+  <p class="subtitle">Connect with your customers and build relationships</p>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="conversation active">
+        <div class="avatar">👩</div>
+        <div class="conversation-details">
+          <strong>Sarah Johnson</strong>
+          <small>Perfect! I'll be there around 3 P...</small>
+        </div>
+        <div class="status-dot"></div>
+      </div>
+      <div class="conversation">
+        <div class="avatar">👨</div>
+        <div class="conversation-details">
+          <strong>Mike Chen</strong>
+          <small>Do you have any organic pepper...</small>
+        </div>
+      </div>
+      <div class="conversation">
+        <div class="avatar">👩‍🦱</div>
+        <div class="conversation-details">
+          <strong>Emma Rodriguez</strong>
+          <small>Thank you for the fresh lettuce!</small>
+        </div>
+      </div>
+      <div class="conversation">
+        <div class="avatar">👨‍💻</div>
+        <div class="conversation-details">
+          <strong>David Kim</strong>
+          <small>When will the winter squash be read...</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat">
+      <div class="chat-header">
+        <div>
+          <strong>Sarah Johnson</strong>
+          <small>Regular Customer • Last seen 1 hour ago</small>
+        </div>
+        <div>📞 ℹ️</div>
+      </div>
+
+      <div class="chat-messages">
+        <div class="message you">
+          Hi Sarah! Thanks for your order. The tomatoes you ordered are perfectly ripe and will be ready for pickup this afternoon.
+        </div>
+        <div class="message customer">
+          That's wonderful! What time would be best for pickup? Also, do you have any recipe suggestions for these tomatoes?
+        </div>
+        <div class="message you">
+          Pickup anytime between 2–6 PM works great! Here's my favorite caprese recipe:  
+          <br><br>
+          🍅 <b>Fresh Caprese Salad</b>  
+          - Slice tomatoes thick <br>
+          - Layer with fresh mozzarella <br>
+          - Add basil leaves <br>
+          - Drizzle with olive oil & balsamic
+        </div>
+      </div>
+
+      <div class="chat-footer">
+        <div class="quick-replies">
+          <button>Order ready! ✅</button>
+          <button>Pickup time? ⏰</button>
+          <button>Thank you! 🙏</button>
+          <button>Fresh harvest! 🌱</button>
+        </div>
+      </div>
+      <div class="chat-footer">
+        <input type="text" placeholder="Type your message...">
+        <button class="send">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Quick reply button functionality
+    const quickReplies = document.querySelectorAll(".quick-replies button");
+    const input = document.querySelector(".chat-footer input");
+
+    quickReplies.forEach(btn => {
+      btn.addEventListener("click", () => {
+        input.value = btn.textContent;
+      });
+    });
+  </script>
+</body>
+</html>

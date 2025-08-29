@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Valley Farm Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f8fa;
+      color: #333;
+    }
+
+    header {
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #1b3b1a;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: #666;
+    }
+
+    .dashboard {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 22px;
+      color: #222;
+    }
+
+    .card .sub {
+      margin-top: 5px;
+      color: #27ae60;
+      font-size: 14px;
+    }
+
+    /* Colored quick actions */
+    .action {
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .green { background: #16a34a; }
+    .blue { background: #2563eb; }
+    .purple { background: #9333ea; }
+
+    /* Recent Orders */
+    .recent-orders {
+      margin: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .order {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid #eee;
+    }
+
+    .order:first-child {
+      border-top: none;
+    }
+
+    .order-details {
+      font-size: 14px;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #16a34a;
+    }
+
+    .status {
+      background: #facc15;
+      color: #333;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-right: 8px;
+    }
+
+    .btn {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn:hover {
+      background: #15803d;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Green Valley Farm Dashboard 🌱</h1>
+    <p>Manage your products, orders, and customer relationships</p>
+  </header>
+
+  <!-- Stats Section -->
+  <div class="dashboard">
+    <div class="card">
+      <h2>$12,450 💰</h2>
+      <p>Total Sales</p>
+      <p class="sub">+15% this month</p>
+    </div>
+    <div class="card">
+      <h2>23</h2>
+      <p>Active Orders</p>
+      <p class="sub">8 pending pickup</p>
+    </div>
+    <div class="card">
+      <h2>47 🥬</h2>
+      <p>Products Listed </p>
+      <p class="sub">12 low stock</p>
+    </div>
+    <div class="card">
+      <h2>4.9 ⭐</h2>
+      <p>Customer Rating</p>
+      <p class="sub">156 reviews</p>
+    </div>
+  </div>
+
+  <!-- Actions Section -->
+  <div class="dashboard">
+    <div class="card action green">+ Add New Product</div>
+    <div class="card action blue">📋 Manage Orders</div>
+    <div class="card action purple">💬 Customer Messages</div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="recent-orders">
+    <h2>Recent Orders</h2>
+    <div class="order">
+      <div class="order-details">
+        <strong>Order #DTD-2024-001</strong><br>
+        Sarah Johnson • Mixed Greens, Carrots, Tomatoes<br>
+        <small>Ordered 2 hours ago</small>
+      </div>
+      <div>
+        <span class="price">$37.24</span><br>
+        <span class="status">Preparing</span>
+        <button class="btn">Update</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
