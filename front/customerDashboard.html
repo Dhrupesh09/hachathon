@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard - FarmDirect</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
@@ -101,8 +102,14 @@
                 <button onclick="addSampleProducts()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors mr-4">
                     <i class="fas fa-seedling mr-2"></i>Add Sample Products
                 </button>
-                <button onclick="checkDatabase()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <button onclick="checkDatabase()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors mr-4">
                     <i class="fas fa-database mr-2"></i>Check Database
+                </button>
+                <button onclick="testAPI()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors mr-4">
+                    <i class="fas fa-flask mr-2"></i>Test API
+                </button>
+                <button onclick="checkServerStatus()" class="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors">
+                    <i class="fas fa-server mr-2"></i>Server Status
                 </button>
             </div>
         </div>
@@ -284,7 +291,14 @@
                         quantity: 50,
                         unit: 'kg',
                         isOrganic: true,
-                        images: ['https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&h=200&fit=crop']
+                        isAvailable: true,
+                        images: ['https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&h=200&fit=crop'],
+                        harvestDate: new Date(),
+                        expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+                        location: {
+                            type: 'Point',
+                            coordinates: [0, 0] // Default coordinates
+                        }
                     },
                     {
                         name: 'Sweet Corn',
@@ -294,7 +308,14 @@
                         quantity: 100,
                         unit: 'piece',
                         isOrganic: false,
-                        images: ['https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=200&fit=crop']
+                        isAvailable: true,
+                        images: ['https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=200&fit=crop'],
+                        harvestDate: new Date(),
+                        expiryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+                        location: {
+                            type: 'Point',
+                            coordinates: [0, 0] // Default coordinates
+                        }
                     },
                     {
                         name: 'Fresh Milk',
@@ -304,12 +325,38 @@
                         quantity: 30,
                         unit: 'liter',
                         isOrganic: true,
-                        images: ['https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=200&fit=crop']
+                        isAvailable: true,
+                        images: ['https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=200&fit=crop'],
+                        harvestDate: new Date(),
+                        expiryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+                        location: {
+                            type: 'Point',
+                            coordinates: [0, 0] // Default coordinates
+                        }
                     }
                 ];
 
+                // Prepare products for API (remove farmerId as it's set automatically)
+                const productsForAPI = sampleProducts.map(product => ({
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    category: product.category,
+                    quantity: parseInt(product.quantity), // Ensure it's an integer
+                    unit: product.unit,
+                    isOrganic: product.isOrganic,
+                    isAvailable: product.isAvailable,
+                    images: product.images,
+                    harvestDate: product.harvestDate,
+                    expiryDate: product.expiryDate,
+                    location: product.location
+                }));
+
                 // Add each product
-                for (const productData of sampleProducts) {
+                for (const productData of productsForAPI) {
+                    console.log('Adding product:', productData.name);
+                    console.log('Product data for API:', productData);
+                    
                     const productResponse = await fetch('/api/products', {
                         method: 'POST',
                         headers: {
@@ -319,11 +366,15 @@
                         body: JSON.stringify(productData)
                     });
 
+                    const productResult = await productResponse.json();
+                    console.log('Product response status:', productResponse.status);
+                    console.log('Product response:', productResult);
+
                     if (productResponse.ok) {
-                        const productResult = await productResponse.json();
-                        console.log('Product added:', productResult);
+                        console.log('✅ Product added successfully:', productData.name);
                     } else {
-                        console.error('Failed to add product:', productData.name);
+                        console.error('❌ Failed to add product:', productData.name);
+                        console.error('Error details:', productResult);
                     }
                 }
 
@@ -361,6 +412,84 @@
             } catch (error) {
                 console.error('Error checking database:', error);
                 showNotification('Error checking database: ' + error.message, 'error');
+            }
+        }
+
+        async function testAPI() {
+            try {
+                console.log('🧪 Testing API endpoints...');
+                
+                // Test 1: Health endpoint
+                console.log('1️⃣ Testing health endpoint...');
+                const healthResponse = await fetch('/api/health');
+                const healthResult = await healthResponse.json();
+                console.log('✅ Health endpoint:', healthResult);
+                
+                // Test 2: Products endpoint (GET)
+                console.log('2️⃣ Testing products GET endpoint...');
+                const productsResponse = await fetch('/api/products');
+                const productsResult = await productsResponse.json();
+                console.log('✅ Products GET endpoint:', productsResult);
+                
+                // Test 3: Auth endpoint
+                console.log('3️⃣ Testing auth endpoint...');
+                const authResponse = await fetch('/api/auth/profile');
+                const authResult = await authResponse.json();
+                console.log('✅ Auth endpoint:', authResult);
+                
+                // Test 4: Create a test user
+                console.log('4️⃣ Testing user creation...');
+                const testUserData = {
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    password: 'test123',
+                    role: 'customer',
+                    phone: '1234567890'
+                };
+                
+                const userResponse = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testUserData)
+                });
+                
+                const userResult = await userResponse.json();
+                console.log('✅ User creation test:', userResult);
+                
+                showNotification('API test completed! Check console for detailed results.', 'success');
+                
+            } catch (error) {
+                console.error('❌ API test failed:', error);
+                showNotification('API test failed: ' + error.message, 'error');
+            }
+        }
+
+        async function checkServerStatus() {
+            try {
+                console.log('🔍 Checking server status...');
+                
+                // Check if server is responding
+                const startTime = Date.now();
+                const healthResponse = await fetch('/api/health');
+                const responseTime = Date.now() - startTime;
+                
+                if (healthResponse.ok) {
+                    const healthResult = await healthResponse.json();
+                    console.log('✅ Server is running');
+                    console.log('📊 Response time:', responseTime + 'ms');
+                    console.log('🌐 Server info:', healthResult);
+                    
+                    showNotification(`Server is running! Response time: ${responseTime}ms`, 'success');
+                } else {
+                    console.error('❌ Server responded with error:', healthResponse.status);
+                    showNotification(`Server error: ${healthResponse.status}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('❌ Cannot connect to server:', error);
+                showNotification('Cannot connect to server. Is it running?', 'error');
             }
         }
 
