@@ -502,15 +502,18 @@
                         <p class="text-gray-600">Sign in to start shopping fresh local produce</p>
                     </div>
 
-                    <div class="space-y-6">
+                    <div id="customerSigninError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
+                    <div id="customerSigninSuccess" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"></div>
+
+                    <form id="customerSigninForm" class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                            <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="your@email.com">
+                            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="your@email.com">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                            <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                            <input type="password" name="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
                         </div>
                         
                         <div class="flex items-center justify-between">
@@ -521,15 +524,15 @@
                             <a href="#" class="text-sm text-blue-600 hover:text-blue-700">Forgot password?</a>
                         </div>
                         
-                        <button onclick="showPage('customer-dashboard')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
                             Sign In
                         </button>
                         
                         <div class="text-center">
                             <span class="text-gray-600">Don't have an account? </span>
-                            <button onclick="showPage('customer-signup')" class="text-blue-600 hover:text-blue-700 font-semibold">Sign up</button>
+                            <button type="button" onclick="showPage('customer-signup')" class="text-blue-600 hover:text-blue-700 font-semibold">Sign up</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 
                 <div class="text-center mt-6">
@@ -550,36 +553,39 @@
                         <p class="text-gray-600">Create your account to start shopping</p>
                     </div>
 
-                    <form class="space-y-6">
+                    <div id="customerSignupError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
+                    <div id="customerSignupSuccess" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"></div>
+
+                    <form id="customerSignupForm" class="space-y-6">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="John">
+                                <input type="text" name="firstName" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="John">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Doe">
+                                <input type="text" name="lastName" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Doe">
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                            <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="john@email.com">
+                            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="john@email.com">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                            <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="(555) 123-4567">
+                            <input type="tel" name="phone" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="(555) 123-4567">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
-                            <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="123 Main St, City, State 12345">
+                            <input type="text" name="address" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="123 Main St, City, State 12345">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                            <input type="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                            <input type="password" name="password" required minlength="6" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
                         </div>
                         
                         <div>
@@ -589,7 +595,7 @@
                             </label>
                         </div>
                         
-                        <button type="button" onclick="showPage('customer-dashboard')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
                             Create Account
                         </button>
                         
@@ -618,15 +624,18 @@
                         <p class="text-gray-600">Sign in to manage your farm and products</p>
                     </div>
 
-                    <div class="space-y-6">
+                    <div id="farmerSigninError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
+                    <div id="farmerSigninSuccess" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"></div>
+
+                    <form id="farmerSigninForm" class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                            <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
+                            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                            <input type="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
+                            <input type="password" name="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
                         </div>
                         
                         <div class="flex items-center justify-between">
@@ -637,15 +646,15 @@
                             <a href="#" class="text-sm text-emerald-600 hover:text-emerald-700">Forgot password?</a>
                         </div>
                         
-                        <button onclick="showPage('farmer-dashboard')" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
+                        <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
                             Sign In
                         </button>
                         
                         <div class="text-center">
                             <span class="text-gray-600">Don't have an account? </span>
-                            <button onclick="showPage('farmer-signup')" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign up</button>
+                            <button type="button" onclick="showPage('farmer-signup')" class="text-emerald-600 hover:text-emerald-700 font-semibold">Sign up</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 
                 <div class="text-center mt-6">
@@ -666,59 +675,40 @@
                         <p class="text-gray-600">Start selling directly to customers in your area</p>
                     </div>
 
-                    <form class="space-y-6">
+                    <div id="farmerSignupError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
+                    <div id="farmerSignupSuccess" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"></div>
+
+                    <form id="farmerSignupForm" class="space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Farm Name *</label>
-                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Green Valley Farm">
+                                <input type="text" name="farmName" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Green Valley Farm">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Owner Name *</label>
-                                <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="John Smith">
+                                <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="John Smith">
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Farm Address *</label>
-                            <input type="text" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="123 Farm Road, Rural County, State 12345">
+                            <input type="text" name="address" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="123 Farm Road, Rural County, State 12345">
                         </div>
                         
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                                <input type="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
+                                <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="farmer@email.com">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                                <input type="tel" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="(555) 123-4567">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Primary Products *</label>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2">
-                                    <span class="text-sm text-gray-700">Vegetables</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2">
-                                    <span class="text-sm text-gray-700">Fruits</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2">
-                                    <span class="text-sm text-gray-700">Herbs</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2">
-                                    <span class="text-sm text-gray-700">Dairy</span>
-                                </label>
+                                <input type="tel" name="phone" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="(555) 123-4567">
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
-                            <input type="password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
+                            <input type="password" name="password" required minlength="6" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="••••••••">
                         </div>
                         
                         <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
@@ -737,7 +727,7 @@
                             </label>
                         </div>
                         
-                        <button type="button" onclick="showPage('farmer-dashboard')" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
+                        <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
                             Create Farmer Account
                         </button>
                         
@@ -1412,7 +1402,244 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             showPage('home');
+            
+            // Set up form handlers
+            setupCustomerSigninForm();
+            setupCustomerSignupForm();
+            setupFarmerSigninForm();
+            setupFarmerSignupForm();
         });
+
+        function setupCustomerSigninForm() {
+            const form = document.getElementById('customerSigninForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const loginData = {
+                        email: formData.get('email'),
+                        password: formData.get('password')
+                    };
+
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(loginData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Store token and user data
+                            localStorage.setItem('token', result.token);
+                            localStorage.setItem('user', JSON.stringify(result.user));
+                            
+                            // Show success message
+                            showCustomerMessage('Login successful! Redirecting...', 'success');
+                            
+                            // Redirect to customer dashboard after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = '/customer/dashboard';
+                            }, 2000);
+                        } else {
+                            showCustomerMessage(result.message || 'Login failed', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showCustomerMessage('An error occurred. Please try again.', 'error');
+                    }
+                });
+            }
+        }
+
+        function setupCustomerSignupForm() {
+            const form = document.getElementById('customerSignupForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const userData = {
+                        name: formData.get('firstName') + ' ' + formData.get('lastName'),
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        phone: formData.get('phone'),
+                        role: 'customer',
+                        address: formData.get('address')
+                    };
+
+                    try {
+                        const response = await fetch('/api/auth/register', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(userData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Store token and user data
+                            localStorage.setItem('token', result.token);
+                            localStorage.setItem('user', JSON.stringify(result.user));
+                            
+                            // Show success message
+                            showCustomerMessage('Account created successfully! Redirecting...', 'success');
+                            
+                            // Redirect to customer dashboard after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = '/customer/dashboard';
+                            }, 2000);
+                        } else {
+                            showCustomerMessage(result.message || 'Registration failed', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showCustomerMessage('An error occurred. Please try again.', 'error');
+                    }
+                });
+            }
+        }
+
+        function showCustomerMessage(message, type) {
+            const errorDiv = document.getElementById('customerSigninError') || document.getElementById('customerSignupError');
+            const successDiv = document.getElementById('customerSigninSuccess') || document.getElementById('customerSignupSuccess');
+            
+            if (errorDiv && successDiv) {
+                // Hide both messages first
+                errorDiv.classList.add('hidden');
+                successDiv.classList.add('hidden');
+                
+                if (type === 'error') {
+                    errorDiv.textContent = message;
+                    errorDiv.classList.remove('hidden');
+                } else {
+                    successDiv.textContent = message;
+                    successDiv.classList.remove('hidden');
+                }
+            }
+        }
+
+        function setupFarmerSigninForm() {
+            const form = document.getElementById('farmerSigninForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const loginData = {
+                        email: formData.get('email'),
+                        password: formData.get('password')
+                    };
+
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(loginData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Store token and user data
+                            localStorage.setItem('token', result.token);
+                            localStorage.setItem('user', JSON.stringify(result.user));
+                            
+                            // Show success message
+                            showFarmerMessage('Login successful! Redirecting...', 'success');
+                            
+                            // Redirect to farmer dashboard after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = '/farmer/products';
+                            }, 2000);
+                        } else {
+                            showFarmerMessage(result.message || 'Login failed', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showFarmerMessage('An error occurred. Please try again.', 'error');
+                    }
+                });
+            }
+        }
+
+        function setupFarmerSignupForm() {
+            const form = document.getElementById('farmerSignupForm');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const userData = {
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        phone: formData.get('phone'),
+                        role: 'farmer',
+                        farmName: formData.get('farmName'),
+                        address: formData.get('address')
+                    };
+
+                    try {
+                        const response = await fetch('/api/auth/register', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(userData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Store token and user data
+                            localStorage.setItem('token', result.token);
+                            localStorage.setItem('user', JSON.stringify(result.user));
+                            
+                            // Show success message
+                            showFarmerMessage('Account created successfully! Redirecting...', 'success');
+                            
+                            // Redirect to farmer dashboard after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = '/farmer/products';
+                            }, 2000);
+                        } else {
+                            showFarmerMessage(result.message || 'Registration failed', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showFarmerMessage('An error occurred. Please try again.', 'error');
+                    }
+                });
+            }
+        }
+
+        function showFarmerMessage(message, type) {
+            const errorDiv = document.getElementById('farmerSigninError') || document.getElementById('farmerSignupError');
+            const successDiv = document.getElementById('farmerSigninSuccess') || document.getElementById('farmerSignupSuccess');
+            
+            if (errorDiv && successDiv) {
+                // Hide both messages first
+                errorDiv.classList.add('hidden');
+                successDiv.classList.add('hidden');
+                
+                if (type === 'error') {
+                    errorDiv.textContent = message;
+                    errorDiv.classList.remove('hidden');
+                } else {
+                    successDiv.textContent = message;
+                    successDiv.classList.remove('hidden');
+                }
+            }
+        }
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9740600ad58f343c',t:'MTc1NjAxMjU2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

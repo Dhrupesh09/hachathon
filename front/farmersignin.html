@@ -58,6 +58,7 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 14px;
+      box-sizing: border-box;
     }
 
     .options {
@@ -84,6 +85,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
+      transition: background 0.3s;
     }
 
     .login-btn:hover {
@@ -107,9 +109,31 @@
     }
 
     .back-home a {
-      color: #000;
+      color: #666;
       text-decoration: none;
       font-weight: 500;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      display: none;
     }
   </style>
 </head>
@@ -119,15 +143,18 @@
     <h2>Farmer Portal</h2>
     <p>Sign in to manage your farm and products</p>
 
-    <form>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="successMessage" class="success-message"></div>
+
+    <form id="farmerSigninForm">
       <div class="input-group">
         <label>Email Address</label>
-        <input type="email" placeholder="farmer@email.com" required>
+        <input type="email" name="email" placeholder="farmer@email.com" required>
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input type="password" placeholder="••••••••" required>
+        <input type="password" name="password" placeholder="••••••••" required>
       </div>
 
       <div class="options">
@@ -139,12 +166,70 @@
     </form>
 
     <div class="signup">
-      Don't have an account? <a href="#">Sign up</a>
+      Don't have an account? <a href="/farmer/signup">Sign up</a>
     </div>
 
     <div class="back-home">
-      ← <a href="#">Back to Home</a>
+      ← <a href="/">Back to Home</a>
     </div>
   </div>
+
+  <script>
+    document.getElementById("farmerSigninForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const loginData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+      };
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Store token and user data
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          
+          // Show success message
+          showMessage('Login successful! Redirecting...', 'success');
+          
+          // Redirect to farmer dashboard after 2 seconds
+          setTimeout(() => {
+            window.location.href = '/farmer/products';
+          }, 2000);
+        } else {
+          showMessage(result.message || 'Login failed', 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('An error occurred. Please try again.', 'error');
+      }
+    });
+
+    function showMessage(message, type) {
+      const errorDiv = document.getElementById('errorMessage');
+      const successDiv = document.getElementById('successMessage');
+      
+      if (type === 'error') {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      } else {
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>

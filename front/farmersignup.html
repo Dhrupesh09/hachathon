@@ -12,7 +12,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      margin: 60;
+      margin: 0;
     }
 
     .signup-container {
@@ -69,6 +69,7 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 14px;
+      box-sizing: border-box;
     }
 
     .checkbox-group {
@@ -99,22 +100,17 @@
       margin-bottom: 20px;
     }
 
-    .terms a {
-      color: #059669;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
     .signup-btn {
       width: 100%;
-      padding: 12px;
       background: #059669;
       color: white;
-      font-size: 16px;
       border: none;
+      padding: 12px;
       border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
+      transition: background 0.3s;
     }
 
     .signup-btn:hover {
@@ -123,26 +119,47 @@
 
     .login-link {
       text-align: center;
-      margin-top: 15px;
+      margin-top: 20px;
       font-size: 14px;
     }
 
     .login-link a {
       color: #059669;
-      font-weight: bold;
       text-decoration: none;
+      font-weight: 600;
     }
 
     .back-home {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
       font-size: 14px;
     }
 
     .back-home a {
-      color: #000;
+      color: #666;
       text-decoration: none;
-      font-weight: 500;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      display: none;
     }
   </style>
 </head>
@@ -152,47 +169,42 @@
     <h2>Join as Farmer</h2>
     <p>Start selling directly to customers in your area</p>
 
-    <form>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="successMessage" class="success-message"></div>
+
+    <form id="farmerSignupForm">
       <div class="form-row">
         <div class="form-group">
           <label>Farm Name *</label>
-          <input type="text" placeholder="Green Valley Farm" required>
+          <input type="text" name="farmName" placeholder="Green Valley Farm" required>
         </div>
         <div class="form-group">
           <label>Owner Name *</label>
-          <input type="text" placeholder="John Smith" required>
+          <input type="text" name="name" placeholder="John Smith" required>
         </div>
       </div>
 
       <div class="form-group">
         <label>Farm Address *</label>
-        <input type="text" placeholder="123 Farm Road, Rural County, State 12345" required>
+        <input type="text" name="address" placeholder="123 Farm Road, Rural County, State 12345" required>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>Email Address *</label>
-          <input type="email" placeholder="farmer@email.com" required>
+          <input type="email" name="email" placeholder="farmer@email.com" required>
         </div>
         <div class="form-group">
           <label>Phone Number *</label>
-          <input type="tel" placeholder="(555) 123-4567" required>
+          <input type="tel" name="phone" placeholder="(555) 123-4567" required>
         </div>
-      </div>
-
-      <div class="checkbox-group">
-        <label>Primary Products *</label><br>
-        <label><input type="checkbox"> Vegetables</label>
-        <label><input type="checkbox"> Fruits</label>
-        <label><input type="checkbox"> Herbs</label>
-        <label><input type="checkbox"> Dairy</label>
       </div>
 
       <div class="form-group">
         <label>Password *</label>
-        <input type="password" placeholder="••••••••" required>
+        <input type="password" name="password" placeholder="••••••••" required minlength="6">
       </div>
-       <br>
+
       <div class="benefits">
         <p>✓ Direct customer connection - no middleman</p>
         <p>✓ Only 5% platform fee (industry lowest)</p>
@@ -210,37 +222,75 @@
     </form>
 
     <div class="login-link">
-      Already have an account? <a href="#">Sign in</a>
+      Already have an account? <a href="/farmer/signin">Sign in</a>
     </div>
 
     <div class="back-home">
-      ← <a href="#">Back to Home</a>
+      ← <a href="/">Back to Home</a>
     </div>
   </div>
-<form id="signupForm">
-   ...
-</form>
-<script>
-document.getElementById("signupForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const data = {
-    farmName: e.target[0].value,
-    ownerName: e.target[1].value,
-    address: e.target[2].value,
-    email: e.target[3].value,
-    phone: e.target[4].value,
-    password: e.target[5].value
-  };
-  let res = await fetch("http://localhost:5000/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-  let msg = await res.json();
-  alert(msg.message || msg.error);
-});
-</script>
 
+  <script>
+    document.getElementById("farmerSignupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const userData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        phone: formData.get('phone'),
+        role: 'farmer',
+        farmName: formData.get('farmName'),
+        address: formData.get('address')
+      };
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Store token and user data
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          
+          // Show success message
+          showMessage('Account created successfully! Redirecting...', 'success');
+          
+          // Redirect to farmer dashboard after 2 seconds
+          setTimeout(() => {
+            window.location.href = '/farmer/products';
+          }, 2000);
+        } else {
+          showMessage(result.message || 'Registration failed', 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('An error occurred. Please try again.', 'error');
+      }
+    });
+
+    function showMessage(message, type) {
+      const errorDiv = document.getElementById('errorMessage');
+      const successDiv = document.getElementById('successMessage');
+      
+      if (type === 'error') {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+      } else {
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+      }
+    }
+  </script>
 </body>
-
 </html>

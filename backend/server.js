@@ -117,11 +117,15 @@ app.get('/customer/signup', (req, res) => {
 });
 
 app.get('/customer/signin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front/FFP.html'));
+  res.sendFile(path.join(__dirname, '../front/customerSignin.html'));
 });
 
 app.get('/customer/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, '../front/customerDashboard.html'));
+});
+
+app.get('/test', (req, res) => {
+  res.sendFile(path.join(__dirname, '../test_api.html'));
 });
 
 app.get('/customer/chat', (req, res) => {
