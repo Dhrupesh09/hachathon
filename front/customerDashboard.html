@@ -93,6 +93,20 @@
             </div>
         </div>
 
+        <!-- Add Sample Products Button (for testing) -->
+        <div class="card rounded-2xl p-6 mb-8 text-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Database Setup</h3>
+            <p class="text-gray-600 mb-4">No products found. You need to populate your database first.</p>
+            <div class="space-y-3">
+                <button onclick="addSampleProducts()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors mr-4">
+                    <i class="fas fa-seedling mr-2"></i>Add Sample Products
+                </button>
+                <button onclick="checkDatabase()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-database mr-2"></i>Check Database
+                </button>
+            </div>
+        </div>
+
         <!-- Products Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
             <!-- Products will be loaded here -->
@@ -193,23 +207,194 @@
                 if (category) url += `&category=${category}`;
                 if (sortBy) url += `&sortBy=${sortBy}`;
                 
+                console.log('Loading products from:', url);
                 const response = await fetch(url);
                 const result = await response.json();
+                
+                console.log('Products API response:', result);
                 
                 if (result.success) {
                     products = result.products;
                     currentPage = page;
                     displayProducts();
                     displayPagination(result.pagination);
+                } else {
+                    console.error('API returned error:', result.message);
+                    showNoProductsMessage();
                 }
             } catch (error) {
                 console.error('Error loading products:', error);
+                showNoProductsMessage();
             }
+        }
+
+        function showNoProductsMessage() {
+            const container = document.querySelector('.grid');
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="text-6xl mb-4">🌾</div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">No Products Available</h3>
+                    <p class="text-gray-500 mb-4">It looks like there are no products in the database yet.</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p>• Run the seed script: <code class="bg-gray-100 px-2 py-1 rounded">npm run seed</code></p>
+                        <p>• Or add products manually through the farmer dashboard</p>
+                        <p>• Check if MongoDB is running</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function addSampleProducts() {
+            try {
+                console.log('Adding sample products...');
+                
+                // First, we need to create a farmer account
+                const farmerData = {
+                    name: 'Sample Farmer',
+                    email: 'farmer@sample.com',
+                    password: 'password123',
+                    role: 'farmer',
+                    phone: '1234567890',
+                    address: '123 Sample Farm Road'
+                };
+
+                // Create farmer account
+                const farmerResponse = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(farmerData)
+                });
+
+                if (!farmerResponse.ok) {
+                    throw new Error('Failed to create farmer account');
+                }
+
+                const farmerResult = await farmerResponse.json();
+                console.log('Farmer created:', farmerResult);
+
+                // Now add sample products
+                const sampleProducts = [
+                    {
+                        name: 'Fresh Tomatoes',
+                        description: 'Sweet, juicy tomatoes grown organically',
+                        price: 2.99,
+                        category: 'vegetables',
+                        quantity: 50,
+                        unit: 'kg',
+                        isOrganic: true,
+                        images: ['https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&h=200&fit=crop']
+                    },
+                    {
+                        name: 'Sweet Corn',
+                        description: 'Fresh sweet corn picked this morning',
+                        price: 1.49,
+                        category: 'vegetables',
+                        quantity: 100,
+                        unit: 'piece',
+                        isOrganic: false,
+                        images: ['https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=200&fit=crop']
+                    },
+                    {
+                        name: 'Fresh Milk',
+                        description: 'Pure, fresh milk from grass-fed cows',
+                        price: 3.49,
+                        category: 'dairy',
+                        quantity: 30,
+                        unit: 'liter',
+                        isOrganic: true,
+                        images: ['https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=200&fit=crop']
+                    }
+                ];
+
+                // Add each product
+                for (const productData of sampleProducts) {
+                    const productResponse = await fetch('/api/products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${farmerResult.token}`
+                        },
+                        body: JSON.stringify(productData)
+                    });
+
+                    if (productResponse.ok) {
+                        const productResult = await productResponse.json();
+                        console.log('Product added:', productResult);
+                    } else {
+                        console.error('Failed to add product:', productData.name);
+                    }
+                }
+
+                // Refresh the products list
+                loadProducts();
+                showNotification('Sample products added successfully!');
+
+            } catch (error) {
+                console.error('Error adding sample products:', error);
+                showNotification('Error adding sample products: ' + error.message, 'error');
+            }
+        }
+
+        async function checkDatabase() {
+            try {
+                console.log('Checking database...');
+                
+                // Check health endpoint
+                const healthResponse = await fetch('/api/health');
+                const healthResult = await healthResponse.json();
+                console.log('Health check:', healthResult);
+
+                // Check products endpoint
+                const productsResponse = await fetch('/api/products');
+                const productsResult = await productsResponse.json();
+                console.log('Products check:', productsResult);
+
+                // Check if there are any users
+                const authResponse = await fetch('/api/auth/profile');
+                const authResult = await authResponse.json();
+                console.log('Auth check:', authResult);
+
+                showNotification('Database check completed. Check console for details.');
+
+            } catch (error) {
+                console.error('Error checking database:', error);
+                showNotification('Error checking database: ' + error.message, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
 
         function displayProducts() {
             const container = document.querySelector('.grid');
+            const setupSection = document.querySelector('.card.rounded-2xl.p-6.mb-8.text-center');
+            
+            // Hide setup section if products exist
+            if (setupSection) {
+                setupSection.style.display = products.length > 0 ? 'none' : 'block';
+            }
+            
             container.innerHTML = '';
+            
+            if (products.length === 0) {
+                showNoProductsMessage();
+                return;
+            }
             
             products.forEach(product => {
                 const productCard = createProductCard(product);
